@@ -5,6 +5,15 @@ public class Node {
     private Node left;
     private Node right;
     private Point point;
+     FindRange findRange;
+
+
+
+    public Node(Point point){
+        setPoint(point);
+        findRange = new FindRange(point.y , point.x);
+        findRange.put(point.y , point.x);
+    }
 
 
     public void setLeft(Node left) {
