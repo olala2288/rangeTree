@@ -12,11 +12,18 @@ public class Main {
         p[5] = new Point(7 , 2);
         p[6] = new Point(9 , 3);
 
+        Point down = new Point(0,0);
+        Point up = new Point(10 , 10);
+
+        Rectangle rectangle = new Rectangle(up , down);
+
         RangeTree r = new RangeTree();
         for (int i = 0 ; i < p.length ; i++){
             r.insert(p[i]);
         }
-        r.inorder();
-        r.show();
+      //  r.inorder();
+      //  r.show();
+
+        r.search(rectangle);
     }
 }
