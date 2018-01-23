@@ -48,8 +48,10 @@ public class Rectangle {
 
     public boolean inRectangle(Point point){
 
-        return point.x >= minX() && point.y >= minY() && point.x <= maxX() && point.y <= maxY();
+        return point.x >= minX() && point.y >= minY() && point.x < maxX() && point.y < maxY();
     }
+
+
 
 
 

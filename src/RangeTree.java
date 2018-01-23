@@ -7,6 +7,9 @@ public class RangeTree {
 
    private Node root;
    int[] sortArray;
+   String result = null;
+   String firstLine = "";
+   String secondLine = "";
 
    public RangeTree(){
        root = null;
@@ -26,39 +29,9 @@ public class RangeTree {
 
     public void insert(Point point){
        root = insert(point , root);
-    }
-
-    private Node insert(Node h , Point point){
-       if (h == null) return new Node(point);
-       h.findRange.put(point.y , point.x);
-
-       if (point.x <= h.getPoint().x){
-           h.setLeft(insert(h.getLeft() , point));
-       }
-       else {
-           h.setRight(insert(h.getRight() , point));
-       }
-
-       return h;
-    }
-
-    private void inorder(Node r)
-
-    {
-
-        if (r != null)
-
-        {
-
-            inorder(r.getLeft());
-
-            System.out.print(r.getPoint().x + " ");
-
-            inorder(r.getRight());
-
-        }
 
     }
+
 
     private Node insert(Point p, Node t)
 
@@ -67,7 +40,9 @@ public class RangeTree {
         if (t == null)
             t = new Node(p);
 
-        else if (p.x < t.getPoint().x)
+        t.findRange.put(p.y , p.x);
+
+        if (p.x < t.getPoint().x)
 
         {
 
@@ -108,7 +83,7 @@ public class RangeTree {
             ;  // Duplicate; do nothing
 
         t.height = max( height( t.getLeft() ), height( t.getRight() ) ) + 1;
-        t.findRange.put(p.y , p.x);
+
 
         return t;
 
@@ -181,6 +156,7 @@ public class RangeTree {
        int maxY = rect.maxY();
        int minX = rect.minX();
        int minY = rect.minY();
+
        Node help = root;
 
        while (help!=null && !rect.inXLimit(help.getPoint().x)){
@@ -190,7 +166,11 @@ public class RangeTree {
        }
        if (help==null) return;
 
-       if (rect.inRectangle(help.getPoint())) System.out.println("("+help.getPoint().x+","+help.getPoint().y + ")");
+       if (rect.inRectangle(help.getPoint())){
+           firstLine += help.getPoint().x + " ";
+           secondLine += help.getPoint().y + " ";
+          // System.out.println("("+help.getPoint().x+","+help.getPoint().y + ")");
+       }
 
        searchOnLeft(help.getLeft() , rect);
        searchOnRight(help.getRight() , rect);
@@ -198,7 +178,11 @@ public class RangeTree {
 
     private void searchOnLeft(Node help , Rectangle rectangle){
        if (help == null) return;
-        if (rectangle.inRectangle(help.getPoint())) System.out.println("B: " + help.getPoint().x + ", " + help.getPoint().y);
+        if (rectangle.inRectangle(help.getPoint())){
+            firstLine += help.getPoint().x + " ";
+            secondLine += help.getPoint().y + " ";
+           // System.out.println("B: (" + help.getPoint().x + ", " + help.getPoint().y+")");
+        }
         if (help.getPoint().x > rectangle.minX()) {
 
             subTree(help.getRight(), rectangle);
@@ -212,7 +196,11 @@ public class RangeTree {
 
     private void searchOnRight(Node help , Rectangle rectangle){
        if (help == null) return;
-        if (rectangle.inRectangle(help.getPoint())) System.out.println("C: " + help.getPoint().x + ", " + help.getPoint().y);
+        if (rectangle.inRectangle(help.getPoint())){
+            firstLine += help.getPoint().x + " ";
+            secondLine += help.getPoint().y + " ";
+            //System.out.println("C: (" + help.getPoint().x + ", " + help.getPoint().y + ")");
+        }
         if (help.getPoint().x > rectangle.maxX()) {
 
             subTree(help.getLeft(), rectangle);
@@ -229,13 +217,25 @@ public class RangeTree {
     private void subTree(Node h , Rectangle rectangle){
         if (h == null) return;
 
-        ArrayList<Integer> list = h.findRange.range(rectangle.maxY());
+        ArrayList<Integer> list = h.findRange.range(rectangle.minY() , rectangle.maxY());
         for (int y : list) {
             int x = h.findRange.getX(y);
-            System.out.println("D: " + x + ", " + y);
+            System.out.println("D: (" + x + ", " + y + ")");
         }
         System.out.println("-");
 
+    }
+
+    public void show(){
+       result = firstLine + "\n" + secondLine;
+       if (firstLine.equals("") || secondLine.equals("")){
+           result = "none";
+       }
+       show(result);
+    }
+
+    private void show(String string){
+       System.out.println(string);
     }
 
 
