@@ -152,6 +152,9 @@ public class RangeTree {
     }
 
     public void search(Rectangle rect){
+       firstLine = "";
+       secondLine = "";
+
        double maxX = rect.maxX();
        double maxY = rect.maxY();
        double minX = rect.minX();
@@ -220,9 +223,9 @@ public class RangeTree {
         ArrayList<Double> list = h.findRange.range(rectangle.minY() , rectangle.maxY());
         for (double y : list) {
             double x = h.findRange.getX(y);
-            firstLine += h.getPoint().x + " ";
-            secondLine += h.getPoint().y + " ";
-           // System.out.println("D: (" + x + ", " + y + ")");
+            firstLine += h.x + " ";
+            secondLine += h.y + " ";
+            //System.out.println("D: (" + x + ", " + y + ")");
         }
 
     }
