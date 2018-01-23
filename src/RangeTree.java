@@ -1,8 +1,6 @@
 import java.awt.*;
 import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Random;
+import java.util.*;
 
 public class RangeTree {
 
@@ -12,6 +10,7 @@ public class RangeTree {
    String firstLine = "";
    String secondLine = "";
    DecimalFormat df = new DecimalFormat("0.#");
+   FindRange findRange = new FindRange();
 
    public RangeTree(){
        root = null;
@@ -30,6 +29,7 @@ public class RangeTree {
     }
 
     public void insert(double x , double y){
+
        root = insert(x , y , root);
 
     }
@@ -39,10 +39,11 @@ public class RangeTree {
 
     {
 
+
         if (t == null)
             t = new Node(x , y);
 
-        t.findRange.put(y , x);
+
 
         if (x < t.x)
 
@@ -153,10 +154,19 @@ public class RangeTree {
 
     }
 
+    public void inorder(Node root){
+       if (root == null)
+           return;
+       inorder(root.getLeft());
+       findRange.put(root.y , root.x);
+       inorder(root.getRight());
+    }
+
     public void search(Rectangle rect){
+
        firstLine = "";
        secondLine = "";
-
+       inorder(root);
        double maxX = rect.maxX();
        double maxY = rect.maxY();
        double minX = rect.minX();
@@ -223,18 +233,38 @@ public class RangeTree {
     private void subTree(Node h , Rectangle rectangle){
         if (h == null) return;
 
-        ArrayList<Double> list = h.findRange.range(rectangle.minY() , rectangle.maxY());
+        ArrayList<Double> list = findRange.range(rectangle.minY() , rectangle.maxY());
+
         for (double y : list) {
-            double x = h.findRange.getX(y);
-            firstLine += df.format(h.x) + " ";
-            secondLine += df.format(h.y) + " ";
-            //System.out.println("D: (" + x + ", " + y + ")");
+            double x = findRange.getX(y);
+            if (x <= rectangle.maxX()){
+                firstLine += df.format(x) + " ";
+                secondLine += df.format(y) + " ";
+            }
+
         }
 
     }
 
     public void show(){
-       result = firstLine + "\n" + secondLine;
+       HashSet<Double> set = new HashSet<>();
+       HashSet<Double> sety = new HashSet<>();
+       HashMap<Double , Double> coordinates = new HashMap<>();
+       String[] s = firstLine.split(" ");
+       String[] s2 = secondLine.split(" ");
+       Set<Double> key;
+       for (int i = 0 ; i < s.length ; i++){
+           coordinates.put(Double.parseDouble(s[i]) , Double.parseDouble(s2[i]));
+       }
+       key = coordinates.keySet();
+
+       String first = "";
+       String second = "";
+        for (double d:key){
+            first += df.format(d) + " ";
+            second += df.format(coordinates.get(d)) + " ";
+        }
+       result = first + "\n" + second;
        if (firstLine.equals("") || secondLine.equals("")){
            result = "none";
        }
