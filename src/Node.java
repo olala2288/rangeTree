@@ -6,7 +6,7 @@ public class Node {
     private Node right;
     private Point point;
      FindRange findRange;
-
+     int height;
 
 
     public Node(Point point){

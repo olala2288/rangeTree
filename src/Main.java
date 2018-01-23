@@ -18,11 +18,14 @@ public class Main {
         Rectangle rectangle = new Rectangle(up , down);
 
         RangeTree r = new RangeTree();
-        for (int i = 0 ; i < p.length ; i++){
-            r.insert(p[i]);
-        }
-      //  r.inorder();
-      //  r.show();
+
+       for (int i=0 ; i<p.length ; i++){
+           r.insert(p[i]);
+       }
+
+
+
+
 
         r.search(rectangle);
     }

@@ -1,22 +1,37 @@
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Random;
 
 public class RangeTree {
 
    private Node root;
+   int[] sortArray;
 
    public RangeTree(){
        root = null;
     }
 
+    private int height(Node node){
+       return node == null ? -1 : node.height;
+    }
+
+    private int max(int lhs, int rhs)
+
+    {
+
+        return lhs > rhs ? lhs : rhs;
+
+    }
 
     public void insert(Point point){
-       root = insert(root , point);
+       root = insert(point , root);
     }
 
     private Node insert(Node h , Point point){
        if (h == null) return new Node(point);
        h.findRange.put(point.y , point.x);
+
        if (point.x <= h.getPoint().x){
            h.setLeft(insert(h.getLeft() , point));
        }
@@ -45,15 +60,119 @@ public class RangeTree {
 
     }
 
-    public void inorder(){
-       inorder(root);
+    private Node insert(Point p, Node t)
+
+    {
+
+        if (t == null)
+            t = new Node(p);
+
+        else if (p.x < t.getPoint().x)
+
+        {
+
+            t.setLeft(insert(p , t.getLeft()));
+
+            if( height( t.getLeft() ) - height( t.getRight() ) == 2 )
+
+                if( p.x < t.getLeft().getPoint().x )
+
+                    t = rotateWithLeftChild( t );
+
+                else
+
+                    t = doubleWithLeftChild( t );
+
+        }
+
+        else if( p.x > t.getPoint().x )
+
+        {
+
+            t.setRight(insert(p , t.getRight()));
+
+            if( height( t.getRight() ) - height( t.getLeft() ) == 2 )
+
+                if( p.x > t.getRight().getPoint().x)
+
+                    t = rotateWithRightChild( t );
+
+                else
+
+                    t = doubleWithRightChild( t );
+
+        }
+
+        else
+
+            ;  // Duplicate; do nothing
+
+        t.height = max( height( t.getLeft() ), height( t.getRight() ) ) + 1;
+        t.findRange.put(p.y , p.x);
+
+        return t;
+
     }
 
 
-    public void show(){
-       ArrayList<Integer> list = root.findRange.range(5);
-       System.out.println("\n"+list.size() + "->" + list.get(2));
-       System.out.println("root ->" + root.getPoint().x);
+    private Node rotateWithLeftChild(Node k2)
+
+    {
+
+        Node k1 = k2.getLeft();
+
+        k2.setLeft(k1.getRight());
+
+        k1.setRight(k2);
+
+        k2.height = max( height( k2.getLeft() ), height( k2.getRight() ) ) + 1;
+
+        k1.height = max( height( k1.getLeft() ), k2.height ) + 1;
+
+        return k1;
+
+    }
+
+
+    private Node rotateWithRightChild(Node k1)
+
+    {
+
+        Node k2 = k1.getRight();
+
+        k1.setRight(k2.getLeft());
+
+        k2.setLeft(k1);
+
+        k1.height = max( height( k1.getLeft() ), height( k1.getRight() ) ) + 1;
+
+        k2.height = max( height( k2.getRight() ), k1.height ) + 1;
+
+        return k2;
+
+    }
+
+
+
+    private Node doubleWithLeftChild(Node k3)
+
+    {
+
+        k3.setLeft(rotateWithRightChild( k3.getLeft() ));
+
+        return rotateWithLeftChild( k3 );
+
+    }
+
+
+
+    private Node doubleWithRightChild(Node k1)
+
+    {
+
+        k1.setRight(rotateWithLeftChild( k1.getRight() ));
+
+        return rotateWithRightChild( k1 );
 
     }
 
@@ -80,7 +199,7 @@ public class RangeTree {
     private void searchOnLeft(Node help , Rectangle rectangle){
        if (help == null) return;
         if (rectangle.inRectangle(help.getPoint())) System.out.println("B: " + help.getPoint().x + ", " + help.getPoint().y);
-        if (!(help.getPoint().x < rectangle.minX())) {
+        if (help.getPoint().x > rectangle.minX()) {
 
             subTree(help.getRight(), rectangle);
             searchOnLeft(help.getLeft(), rectangle);
@@ -94,13 +213,15 @@ public class RangeTree {
     private void searchOnRight(Node help , Rectangle rectangle){
        if (help == null) return;
         if (rectangle.inRectangle(help.getPoint())) System.out.println("C: " + help.getPoint().x + ", " + help.getPoint().y);
-        if (!(help.getPoint().x < rectangle.maxX())) {
+        if (help.getPoint().x > rectangle.maxX()) {
 
             subTree(help.getLeft(), rectangle);
             searchOnLeft(help.getRight(), rectangle);
+
         }
         else {
             searchOnLeft(help.getLeft(), rectangle);
+
         }
     }
 
