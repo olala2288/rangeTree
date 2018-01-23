@@ -1,4 +1,5 @@
 import java.awt.*;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
@@ -10,6 +11,7 @@ public class RangeTree {
    String result = null;
    String firstLine = "";
    String secondLine = "";
+   DecimalFormat df = new DecimalFormat("0.#");
 
    public RangeTree(){
        root = null;
@@ -170,8 +172,9 @@ public class RangeTree {
        if (help==null) return;
 
        if (rect.inRectangle(help.x , help.y)){
-           firstLine += help.x + " ";
-           secondLine += help.y + " ";
+
+           firstLine += df.format(help.x) + " ";
+           secondLine += df.format(help.y) + " ";
           // System.out.println("("+help.getPoint().x+","+help.getPoint().y + ")");
        }
 
@@ -182,8 +185,8 @@ public class RangeTree {
     private void searchOnLeft(Node help , Rectangle rectangle){
        if (help == null) return;
         if (rectangle.inRectangle(help.x , help.y)){
-            firstLine += help.x + " ";
-            secondLine += help.y + " ";
+            firstLine += df.format(help.x) + " ";
+            secondLine += df.format(help.y) + " ";
            // System.out.println("B: (" + help.getPoint().x + ", " + help.getPoint().y+")");
         }
         if (help.x > rectangle.minX()) {
@@ -200,8 +203,8 @@ public class RangeTree {
     private void searchOnRight(Node help , Rectangle rectangle){
        if (help == null) return;
         if (rectangle.inRectangle(help.x , help.y)){
-            firstLine += help.x + " ";
-            secondLine += help.y + " ";
+            firstLine += df.format(help.x) + " ";
+            secondLine += df.format(help.y) + " ";
             //System.out.println("C: (" + help.getPoint().x + ", " + help.getPoint().y + ")");
         }
         if (help.x > rectangle.maxX()) {
@@ -223,8 +226,8 @@ public class RangeTree {
         ArrayList<Double> list = h.findRange.range(rectangle.minY() , rectangle.maxY());
         for (double y : list) {
             double x = h.findRange.getX(y);
-            firstLine += h.x + " ";
-            secondLine += h.y + " ";
+            firstLine += df.format(h.x) + " ";
+            secondLine += df.format(h.y) + " ";
             //System.out.println("D: (" + x + ", " + y + ")");
         }
 
