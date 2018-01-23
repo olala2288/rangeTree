@@ -4,51 +4,57 @@ public class Rectangle {
 
      Point up;
      Point down;
+     double upX;
+     double upY;
+     double downX;
+     double downY;
 
-    public Rectangle(Point up , Point down){
-        this.up = up;
-        this.down = down;
+    public Rectangle( double upX , double upY ,  double downX , double downY){
+        this.upX = upX;
+        this.upY = upY;
+        this.downX = downX;
+        this.downY = downY;
     }
 
-    public int maxY(){
-        if (up.y >= down.y){
-            return up.y;
+    public double maxY(){
+        if (upY >= downY){
+            return upY;
         }
-        else return down.y;
+        else return downY;
     }
 
-    public int maxX(){
-        if (up.x >= down.x){
-            return up.x;
+    public double maxX(){
+        if (upX >= downX){
+            return upX;
+        }
+        else return downX;
+    }
+
+    public double minX(){
+        if (upX <= downX){
+            return upX;
         }
         else return down.x;
     }
 
-    public int minX(){
-        if (up.x <= down.x){
-            return up.x;
+    public double minY(){
+        if (upY <= downY){
+            return upY;
         }
-        else return down.x;
+        else return downY;
     }
 
-    public int minY(){
-        if (up.y <= down.y){
-            return up.y;
-        }
-        else return down.y;
-    }
-
-    public boolean inXLimit(int x){
+    public boolean inXLimit(double x){
         return x >= minX() && x<=maxX();
     }
 
-    public boolean inYLimit(int y){
+    public boolean inYLimit(double y){
         return y >= minY() && y <= maxY();
     }
 
-    public boolean inRectangle(Point point){
+    public boolean inRectangle(double x , double y){
 
-        return point.x >= minX() && point.y >= minY() && point.x < maxX() && point.y < maxY();
+        return x >= minX() && y >= minY() && x <= maxX() && y <= maxY();
     }
 
 

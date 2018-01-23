@@ -5,10 +5,13 @@ public class Main {
 
     public static void main(String[] args) {
         Point[] points;
+        Double[] doublesX;
+        Double[] doublesY;
 
         Scanner scanner = new Scanner(System.in);
-        System.out.println("enter inputs");
         int dot = scanner.nextInt();
+        doublesX = new Double[dot];
+        doublesY = new Double[dot];
         scanner.nextLine();
         String x = scanner.nextLine();
         String y = scanner.nextLine();
@@ -17,25 +20,24 @@ public class Main {
         Rectangle[] rectangles = new Rectangle[recs];
         int k = 0;
         while (recs > 0){
-            System.out.println("enter rectangle:");
             String rec1 = scanner.nextLine();
             String[] h = rec1.split(" ");
-            int uX = Integer.parseInt(h[0]);
-            int uY = Integer.parseInt(h[1]);
-            int dx = Integer.parseInt(h[2]);
-            int dY = Integer.parseInt(h[3]);
-            rectangles[k] = new Rectangle(new Point(uX , uY) , new Point(dx , dY));
+            double uX = Double.parseDouble(h[0]);
+            double uY = Double.parseDouble(h[1]);
+            double dx = Double.parseDouble(h[2]);
+            double dY = Double.parseDouble(h[3]);
+            rectangles[k] = new Rectangle(uX , uY , dx , dY);
             recs--;
             k++;
         }
 
-        points = new Point[dot];
         String[] s = x.split(" ");
         String[] sy = y.split(" ");
         for (int i = 0 ; i< dot ; i ++){
-            int sX = Integer.parseInt(s[i]);
-            int sY = Integer.parseInt(sy[i]);
-            points[i] = new Point(sX , sY);
+            double sX = Double.parseDouble(s[i]);
+            double sY = Double.parseDouble(sy[i]);
+            doublesX[i] = sX;
+            doublesY[i] = sY;
 
         }
 
@@ -43,8 +45,8 @@ public class Main {
 
         RangeTree r = new RangeTree();
 
-       for (int i=0 ; i<points.length ; i++){
-           r.insert(points[i]);
+       for (int i=0 ; i<dot ; i++){
+           r.insert(doublesX[i] , doublesY[i]);
        }
 
        for (int i =0 ; i <rectangles.length; i++){

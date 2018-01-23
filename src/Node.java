@@ -5,6 +5,8 @@ public class Node {
     private Node left;
     private Node right;
     private Point point;
+     double x;
+     double y;
     FindRange findRange = new FindRange();
      int height;
 
@@ -13,6 +15,12 @@ public class Node {
         setPoint(point);
        // findRange = new FindRange(point.y , point.x);
         findRange.put(point.y , point.x);
+    }
+
+    public Node(double x , double y){
+        this.x = x;
+        this.y = y;
+        findRange.put(y , x);
     }
 
 

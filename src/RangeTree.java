@@ -27,30 +27,30 @@ public class RangeTree {
 
     }
 
-    public void insert(Point point){
-       root = insert(point , root);
+    public void insert(double x , double y){
+       root = insert(x , y , root);
 
     }
 
 
-    private Node insert(Point p, Node t)
+    private Node insert(double x , double y, Node t)
 
     {
 
         if (t == null)
-            t = new Node(p);
+            t = new Node(x , y);
 
-        t.findRange.put(p.y , p.x);
+        t.findRange.put(y , x);
 
-        if (p.x < t.getPoint().x)
+        if (x < t.x)
 
         {
 
-            t.setLeft(insert(p , t.getLeft()));
+            t.setLeft(insert(x , y , t.getLeft()));
 
             if( height( t.getLeft() ) - height( t.getRight() ) == 2 )
 
-                if( p.x < t.getLeft().getPoint().x )
+                if( x < t.getLeft().x )
 
                     t = rotateWithLeftChild( t );
 
@@ -60,15 +60,15 @@ public class RangeTree {
 
         }
 
-        else if( p.x > t.getPoint().x )
+        else if( x > t.x )
 
         {
 
-            t.setRight(insert(p , t.getRight()));
+            t.setRight(insert(x , y , t.getRight()));
 
             if( height( t.getRight() ) - height( t.getLeft() ) == 2 )
 
-                if( p.x > t.getRight().getPoint().x)
+                if( x > t.getRight().x)
 
                     t = rotateWithRightChild( t );
 
@@ -152,23 +152,23 @@ public class RangeTree {
     }
 
     public void search(Rectangle rect){
-       int maxX = rect.maxX();
-       int maxY = rect.maxY();
-       int minX = rect.minX();
-       int minY = rect.minY();
+       double maxX = rect.maxX();
+       double maxY = rect.maxY();
+       double minX = rect.minX();
+       double minY = rect.minY();
 
        Node help = root;
 
-       while (help!=null && !rect.inXLimit(help.getPoint().x)){
-           if (maxX < help.getPoint().x) help = help.getLeft();
-           else if (help.getPoint().x < minX) help = help.getRight();
+       while (help!=null && !rect.inXLimit(help.x)){
+           if (maxX < help.x) help = help.getLeft();
+           else if (help.x < minX) help = help.getRight();
 
        }
        if (help==null) return;
 
-       if (rect.inRectangle(help.getPoint())){
-           firstLine += help.getPoint().x + " ";
-           secondLine += help.getPoint().y + " ";
+       if (rect.inRectangle(help.x , help.y)){
+           firstLine += help.x + " ";
+           secondLine += help.y + " ";
           // System.out.println("("+help.getPoint().x+","+help.getPoint().y + ")");
        }
 
@@ -178,12 +178,12 @@ public class RangeTree {
 
     private void searchOnLeft(Node help , Rectangle rectangle){
        if (help == null) return;
-        if (rectangle.inRectangle(help.getPoint())){
-            firstLine += help.getPoint().x + " ";
-            secondLine += help.getPoint().y + " ";
+        if (rectangle.inRectangle(help.x , help.y)){
+            firstLine += help.x + " ";
+            secondLine += help.y + " ";
            // System.out.println("B: (" + help.getPoint().x + ", " + help.getPoint().y+")");
         }
-        if (help.getPoint().x > rectangle.minX()) {
+        if (help.x > rectangle.minX()) {
 
             subTree(help.getRight(), rectangle);
             searchOnLeft(help.getLeft(), rectangle);
@@ -196,12 +196,12 @@ public class RangeTree {
 
     private void searchOnRight(Node help , Rectangle rectangle){
        if (help == null) return;
-        if (rectangle.inRectangle(help.getPoint())){
-            firstLine += help.getPoint().x + " ";
-            secondLine += help.getPoint().y + " ";
+        if (rectangle.inRectangle(help.x , help.y)){
+            firstLine += help.x + " ";
+            secondLine += help.y + " ";
             //System.out.println("C: (" + help.getPoint().x + ", " + help.getPoint().y + ")");
         }
-        if (help.getPoint().x > rectangle.maxX()) {
+        if (help.x > rectangle.maxX()) {
 
             subTree(help.getLeft(), rectangle);
             searchOnLeft(help.getRight(), rectangle);
@@ -217,12 +217,13 @@ public class RangeTree {
     private void subTree(Node h , Rectangle rectangle){
         if (h == null) return;
 
-        ArrayList<Integer> list = h.findRange.range(rectangle.minY() , rectangle.maxY());
-        for (int y : list) {
-            int x = h.findRange.getX(y);
-            System.out.println("D: (" + x + ", " + y + ")");
+        ArrayList<Double> list = h.findRange.range(rectangle.minY() , rectangle.maxY());
+        for (double y : list) {
+            double x = h.findRange.getX(y);
+            firstLine += h.getPoint().x + " ";
+            secondLine += h.getPoint().y + " ";
+           // System.out.println("D: (" + x + ", " + y + ")");
         }
-        System.out.println("-");
 
     }
 
