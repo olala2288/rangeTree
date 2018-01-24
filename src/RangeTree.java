@@ -163,7 +163,6 @@ public class RangeTree {
     }
 
     public void search(Rectangle rect){
-
        firstLine = "";
        secondLine = "";
        inorder(root);
@@ -182,25 +181,33 @@ public class RangeTree {
        if (help==null) return;
 
        if (rect.inRectangle(help.x , help.y)){
-
-           firstLine += df.format(help.x) + " ";
-           secondLine += df.format(help.y) + " ";
-          // System.out.println("("+help.getPoint().x+","+help.getPoint().y + ")");
+        //   firstLine += df.format(help.x) + " ";
+        //   secondLine += df.format(help.y) + " ";
        }
 
-       searchOnLeft(help.getLeft() , rect);
-       searchOnRight(help.getRight() , rect);
+       if (help.getLeft() == null && help.getRight() == null){
+           searchOnY(help , rect);
+       }
+       if (help.x < rect.maxX()){
+           searchOnY(help , rect);
+       }
+       else {
+           searchOnLeft(help.getLeft() , rect);
+           searchOnRight(help.getRight() , rect);
+       }
+
+
     }
 
     private void searchOnLeft(Node help , Rectangle rectangle){
        if (help == null) return;
         if (rectangle.inRectangle(help.x , help.y)){
-            firstLine += df.format(help.x) + " ";
-            secondLine += df.format(help.y) + " ";
-           // System.out.println("B: (" + help.getPoint().x + ", " + help.getPoint().y+")");
+            //firstLine += df.format(help.x) + " ";
+            //secondLine += df.format(help.y) + " ";
         }
-        if (help.x > rectangle.minX()) {
 
+
+        if (help.x > rectangle.minX()) {
             subTree(help.getRight(), rectangle);
             searchOnLeft(help.getLeft(), rectangle);
         }
@@ -220,11 +227,11 @@ public class RangeTree {
         if (help.x > rectangle.maxX()) {
 
             subTree(help.getLeft(), rectangle);
-            searchOnLeft(help.getRight(), rectangle);
+            searchOnRight(help.getRight(), rectangle);
 
         }
         else {
-            searchOnLeft(help.getLeft(), rectangle);
+            searchOnRight(help.getLeft(), rectangle);
 
         }
     }
@@ -232,6 +239,8 @@ public class RangeTree {
 
     private void subTree(Node h , Rectangle rectangle){
         if (h == null) return;
+
+        searchOnY(h , rectangle);
 
         ArrayList<Double> list = findRange.range(rectangle.minY() , rectangle.maxY());
 
@@ -264,7 +273,7 @@ public class RangeTree {
             first += df.format(d) + " ";
             second += df.format(coordinates.get(d)) + " ";
         }
-       result = first + "\n" + second;
+       result = firstLine + "\n" + secondLine;
        if (firstLine.equals("") || secondLine.equals("")){
            result = "none";
        }
@@ -274,6 +283,49 @@ public class RangeTree {
     private void show(String string){
        System.out.println(string);
     }
+
+
+    private void searchOnY(Node h , Rectangle rectangle){
+       double max =0 ;
+       double min = 0;
+       if (h == root){
+           max = findRange.xAxis.get(findRange.xAxis.size()-1);
+           min = findRange.xAxis.get(0);
+       }
+       else if (h.x < root.x){
+           max = root.x;
+           min = findRange.xAxis.get(0);
+       }
+       else {
+           min = root.x;
+           max = findRange.xAxis.get(findRange.xAxis.size()-1);
+       }
+
+       String result = "";
+       String first = "";
+       String second = "";
+       for (double d : findRange.xAxis){
+           if (d >= min && d<= max && rectangle.inXLimit(d)){
+               double y = findRange.getY(d);
+               if (y <= rectangle.maxY() && y >= rectangle.minY()){
+                   first += d+" ";
+                   second += y+" ";
+               }
+           }
+       }
+       if (first.equals("")){
+           result = "none";
+       }
+       else
+       result = first + "\n" + second;
+
+       show(result);
+
+
+
+    }
+
+
 
 
 }

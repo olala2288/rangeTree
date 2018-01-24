@@ -8,7 +8,9 @@ public class FindRange {
     private double x;
     private double y;
     HashMap<Double , Double> point = new HashMap<>();
+    HashMap<Double , Double> point2 = new HashMap<>();
     ArrayList<Double> yAxis = new ArrayList<>();
+    ArrayList<Double> xAxis = new ArrayList<>();
 
     public FindRange(double y , double x){
         this . x = x;
@@ -19,7 +21,9 @@ public class FindRange {
     }
 
     public void put(double y , double x){
+        point2.put(x , y);
         point.put(y , x);
+        xAxis.add(x);
         yAxis.add(y);
     }
 
@@ -39,6 +43,10 @@ public class FindRange {
 
     public double getX(double y){
         return point.get(y);
+    }
+
+    public double getY(double x){
+        return point2.get(x);
     }
 
 

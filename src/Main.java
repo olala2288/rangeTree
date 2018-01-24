@@ -59,7 +59,7 @@ public class Main {
 
             for (int i =0 ; i <rectangles.length; i++){
                 r.search(rectangles[i]);
-                r.show();
+                //r.show();
             }
         }
 
