@@ -17,7 +17,8 @@ public class FindRange {
         this. y = y;
     }
     public FindRange(){
-
+        xAxis.clear();
+        yAxis.clear();
     }
 
     public void put(double y , double x){

@@ -1,9 +1,25 @@
 import java.awt.*;
+import java.util.Random;
 import java.util.Scanner;
 
 public class Main {
 
     public static void main(String[] args) {
+        Random ra = new Random();
+        for (int i = 0 ; i < 100000 ; i++){
+            int x = i;
+
+            System.out.print( x + " ");
+
+        }
+        System.out.println();
+        for ( int i = 0 ; i < 100000 ; i++){
+            int y = i;
+
+            System.out.print( y+ " ");
+
+        }
+
         Point[] points;
         Double[] doublesX;
         Double[] doublesY;
@@ -59,7 +75,7 @@ public class Main {
 
             for (int i =0 ; i <rectangles.length; i++){
                 r.search(rectangles[i]);
-                //r.show();
+                r.show();
             }
         }
 
