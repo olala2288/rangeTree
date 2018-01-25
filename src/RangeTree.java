@@ -14,6 +14,11 @@ public class RangeTree {
    MakeTree makeTree = new MakeTree();
    ArrayList<MyPoint> points = new ArrayList<>();
 
+    /**
+     * should make primary tree right so you can get the right answer
+     *
+     */
+
    public RangeTree(){
        root = null;
     }
