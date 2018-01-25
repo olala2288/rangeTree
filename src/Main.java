@@ -1,26 +1,11 @@
 import java.awt.*;
-import java.util.Random;
-import java.util.Scanner;
+import java.util.*;
 
 public class Main {
 
     public static void main(String[] args) {
-        Random ra = new Random();
-        for (int i = 0 ; i < 100000 ; i++){
-            int x = i;
 
-            System.out.print( x + " ");
-
-        }
-        System.out.println();
-        for ( int i = 0 ; i < 100000 ; i++){
-            int y = i;
-
-            System.out.print( y+ " ");
-
-        }
-
-        Point[] points;
+        ArrayList<MyPoint> points = new ArrayList<>();
         Double[] doublesX;
         Double[] doublesY;
         int dot = 0;
@@ -62,15 +47,24 @@ public class Main {
                 double sY = Double.parseDouble(sy[i]);
                 doublesX[i] = sX;
                 doublesY[i] = sY;
-
+                points.add(new MyPoint(sX , sY));
             }
+
+            Collections.sort(points, new Comparator<MyPoint>() {
+                @Override
+                public int compare(MyPoint p1, MyPoint p2) {
+                    return Double.compare(p1.x , p2.x);
+                }
+            });
+
 
 
 
             RangeTree r = new RangeTree();
+            r.setPoints(points);
 
             for (int i=0 ; i<dot ; i++){
-                r.insert(doublesX[i] , doublesY[i]);
+                r.insert(points.get(i).x , points.get(i).y);
             }
 
             for (int i =0 ; i <rectangles.length; i++){

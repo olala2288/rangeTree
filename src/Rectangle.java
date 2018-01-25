@@ -45,7 +45,7 @@ public class Rectangle {
     }
 
     public boolean inXLimit(double x){
-        return x >= minX() && x<=maxX();
+        return x >= minX() && x<= maxX();
     }
 
     public boolean inYLimit(double y){

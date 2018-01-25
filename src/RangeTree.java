@@ -5,7 +5,6 @@ import java.util.*;
 public class RangeTree {
 
    private Node root;
-   int[] sortArray;
    String result = null;
    String firstLine = "";
    String secondLine = "";
@@ -13,28 +12,22 @@ public class RangeTree {
    FindRange findRange = new FindRange();
    int minus = 0;
    MakeTree makeTree = new MakeTree();
+   ArrayList<MyPoint> points = new ArrayList<>();
 
    public RangeTree(){
        root = null;
     }
 
-    private int height(Node node){
-       return node == null ? -1 : node.height;
-    }
-
-    private int max(int lhs, int rhs)
-
-    {
-
-        return lhs > rhs ? lhs : rhs;
-
-    }
 
     public void insert(double x , double y){
 
        root = makeTree.insert(x , y , root);
-
     }
+
+    public void setPoints(ArrayList<MyPoint> points){
+       this.points = points;
+    }
+
 
 
     public void inorder(Node root){
@@ -48,6 +41,10 @@ public class RangeTree {
     public void search(Rectangle rect){
        firstLine = "";
        secondLine = "";
+       findRange.xAxis.clear();
+       findRange.yAxis.clear();
+       findRange.point.clear();
+       findRange.point2.clear();
        inorder(root);
        double maxX = rect.maxX();
        double maxY = rect.maxY();
@@ -67,19 +64,23 @@ public class RangeTree {
            }
 
        }
+
        if (help==null) return;
 
 
        int h = countSpot(help);
 
-       ArrayList<Double> answers = new ArrayList<>();
-
        if (minus != 0){
            for (int i = 0 ; i < h ; i ++){
                int index = minus - (h - i);
                double y = findRange.getY(findRange.xAxis.get(index));
+               //double y = findRange.yAxis.get(index);
                if (rect.inYLimit(y)){
-                   answers.add(y);
+                   double x = findRange.getX(y);
+                   if (rect.inXLimit(x)){
+                       firstLine += df.format(x) + " ";
+                       secondLine += df.format(y) + " ";
+                   }
                }
            }
        }
@@ -88,24 +89,26 @@ public class RangeTree {
                int index = i;
                double y = findRange.getY(findRange.xAxis.get(index));
                if (rect.inYLimit(y)){
-                   answers.add(y);
+                   double x = findRange.getX(y);
+                   if (rect.inXLimit(x)){
+                       firstLine += df.format(x) + " ";
+                       secondLine += df.format(y) + " ";
+                   }
                }
            }
        }
 
-       findAnswer(answers , rect);
+       if (h == 1 && minus == findRange.xAxis.size()){
 
-    }
-
-    public void findAnswer(ArrayList<Double> answer , Rectangle rectangle){
-       for (double d:answer){
-           double x = findRange.getX(d);
-           if (rectangle.inXLimit(x)){
-               firstLine += df.format(x) + " ";
-               secondLine += df.format(d) + " ";
-           }
        }
+       if (h == 1 && minus == 0){
+
+       }
+
+
+
     }
+
 
 
 
@@ -132,7 +135,7 @@ public class RangeTree {
 
 
        result = fir + "\n" + sec;
-       if (firstLine.equals("") || secondLine.equals("")){
+       if (firstLine.equals("") && secondLine.equals("")){
            result = "None";
        }
        show(result);

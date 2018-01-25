@@ -7,15 +7,11 @@ public class Node {
     private Point point;
      double x;
      double y;
+     int index;
    // FindRange findRange = new FindRange();
      int height;
 
 
-    public Node(Point point){
-        setPoint(point);
-       // findRange = new FindRange(point.y , point.x);
-       // findRange.put(point.y , point.x);
-    }
 
     public Node(double x , double y){
         this.x = x;
@@ -32,9 +28,6 @@ public class Node {
         this.right = right;
     }
 
-    public void setPoint(Point point) {
-        this.point = point;
-    }
 
     public Node getLeft() {
         return left;
@@ -44,7 +37,4 @@ public class Node {
         return right;
     }
 
-    public Point getPoint() {
-        return point;
-    }
 }

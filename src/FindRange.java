@@ -26,6 +26,7 @@ public class FindRange {
         point.put(y , x);
         xAxis.add(x);
         yAxis.add(y);
+        Collections.sort(yAxis);
     }
 
     public ArrayList<Double> range(double minY , double maxY){
